@@ -1,0 +1,23 @@
+{
+  "proposito": "Mantener Jarvis actualizado con lo mejor para construir sistemas de agentes, para que Jarvis siempre esté listo y moderno ante cualquier proyecto.",
+  "pregunta_filtro": "¿Esto hace que Jarvis sea mejor, más capaz o más moderno como sistema de agentes?",
+  "prioridades": [
+    "Novedades de Claude Code y Anthropic — el stack principal de Jarvis",
+    "Nuevos MCPs de la comunidad — puntos de extensión del sistema",
+    "Patrones y técnicas de orquestación multi-agente",
+    "Frameworks y herramientas open-source para construir agentes"
+  ],
+  "tags": {
+    "CLAUDE": ["claude", "anthropic", "claude code", "sdk", "api", "mcp", "model context protocol", "claude api", "claude sonnet", "claude opus"],
+    "AGENTES": ["multi-agent", "agent orchestration", "agentic", "llm agent", "autonomous agent", "tool use", "memory", "handoff", "subagent", "agent loop"],
+    "FRAMEWORKS": ["langchain", "langgraph", "crewai", "pydantic-ai", "open source", "framework", "library", "autogen", "smolagents"],
+    "HERRAMIENTAS": ["mcp server", "plugin", "integration", "workflow", "automation", "tool calling", "function calling"]
+  },
+  "costo_labels": {
+    "gratis": "Gratis/Open source",
+    "incluido": "Incluido en lo que pago",
+    "pago": "De pago — al radar"
+  },
+  "max_items": 5,
+  "descartar_si_ninguna_prioridad": true
+}

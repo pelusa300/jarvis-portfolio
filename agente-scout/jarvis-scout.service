@@ -1,0 +1,17 @@
+[Unit]
+Description=JARVIS Scout — monitor diario/semanal de novedades AI
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/jarvis/agente-scout
+EnvironmentFile=/opt/jarvis/.env
+ExecStart=/opt/jarvis/venv/bin/python3 scout_scheduler.py
+Restart=always
+RestartSec=30
+StandardOutput=append:/opt/jarvis/agente-scout/logs/scheduler.log
+StandardError=append:/opt/jarvis/agente-scout/logs/scheduler.log
+
+[Install]
+WantedBy=multi-user.target

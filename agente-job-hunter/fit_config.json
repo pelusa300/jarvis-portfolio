@@ -1,0 +1,16 @@
+{
+  "scoring": {
+    "remote_position": 2,
+    "mentions_crypto_blockchain_defi": 2,
+    "mentions_aml_kyc_compliance": 2,
+    "mentions_cams": 3,
+    "salary_above_60k": 1,
+    "multi_source": 1
+  },
+  "min_score_to_include": 7,
+  "keywords": {
+    "crypto": ["crypto", "blockchain", "defi", "web3", "digital assets", "bitcoin", "ethereum"],
+    "compliance": ["aml", "kyc", "compliance", "anti-money laundering", "financial crime", "sanctions"],
+    "cams": ["cams", "acams", "anti-money laundering specialist"]
+  }
+}

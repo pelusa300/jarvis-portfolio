@@ -1,0 +1,24 @@
+# Secrets — never commit
+.env
+**/.env
+.env.*
+**/.env.*
+!**/.env.example
+~/.config/jarvis/
+
+# Runtime artifacts
+logs/
+sentinel/
+*.log
+seen_urls.json
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+.pytest_cache/
+
+# Personal data
+shared_reports/
+finanzas.json
+mi_perfil.json
+study_logs/

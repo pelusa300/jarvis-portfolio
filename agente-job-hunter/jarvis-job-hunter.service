@@ -1,0 +1,12 @@
+[Unit]
+Description=JARVIS Job Hunter — scraping semanal Compliance/AML crypto
+After=network.target
+
+[Service]
+Type=oneshot
+User=root
+WorkingDirectory=/opt/jarvis/agente-job-hunter
+EnvironmentFile=/opt/jarvis/.env
+ExecStart=/opt/jarvis/venv/bin/python3 main.py
+StandardOutput=append:/opt/jarvis/agente-job-hunter/logs/job_hunter.log
+StandardError=append:/opt/jarvis/agente-job-hunter/logs/job_hunter.log
