@@ -118,17 +118,34 @@ Agents are decoupled Python scripts. They communicate by writing structured Mark
 
 ## Compliance Angle
 
-This system demonstrates applied AML/compliance thinking in an automated monitoring context:
+Building this system pushed me to apply habits I associate with good compliance work:
 
-**Continuous monitoring without manual intervention** mirrors the principle of ongoing transaction monitoring in AML programs — the health-check agent runs daily at a fixed time, detects anomalies (failed runs, stale reports), and escalates to a notification channel (Telegram) with a single, actionable alert. This is analogous to an automated SAR flagging workflow.
+**Continuous monitoring with a single actionable alert** — the health-check runs daily, checks whether every agent produced output on schedule, and sends one Telegram message only when something needs attention. Designing it this way meant thinking about signal-to-noise: too many alerts trains people to ignore them.
 
-**Audit trail by design** — every agent writes timestamped output to `shared_reports/` and logs. The `_index.md` file documents data ownership, update frequency, and staleness thresholds — the same metadata discipline applied to AML data governance frameworks.
+**Data traceability** — every agent writes timestamped output to `shared_reports/` with a documented owner, update frequency, and staleness threshold. I wanted to be able to answer "when was this last updated and by whom?" without digging through logs.
 
-**Separation of concerns** — each agent has a single domain (job market intelligence, financial monitoring, study tracking) with no cross-domain write access. This mirrors the three-lines-of-defense model: each line has defined scope and escalation paths.
+**Secure credential handling** — API keys live in a single file outside the repository (`~/.config/jarvis/.env`, chmod 600), never in per-agent configs or committed to git. Rotating a key means editing one file.
 
-**Credential hygiene** — API keys are isolated to a single file outside the repository, with restrictive file permissions. This reflects the access control principles required in regulated financial environments (least privilege, need-to-know).
+**Studying toward CAMS** — `agente-CAMS` tracks my study sessions and gaps as I work toward the Certified Anti-Money Laundering Specialist exam. The domain knowledge I'm building informs how I think about the monitoring and escalation patterns in the rest of the system.
 
-The `agente-CAMS` agent tracks progress toward the CAMS certification (Certified Anti-Money Laundering Specialist), reinforcing the system's alignment with professional AML/compliance practice.
+---
+
+## Sample Output
+
+Health-check Telegram alert when an agent fails (invented data):
+
+```
+🔴 Jarvis Health Check — 2026-10-30 08:30
+
+❌ scout     — last run: 26h ago | error: Your credit balance is too low to
+               access the Anthropic API. Please go to Plans & Billing to…
+✅ cfo       — last run: 3h ago
+✅ job-hunter — last run: 4h ago
+✅ flare     — last run: 2h ago
+```
+
+On days when everything ran cleanly, no message is sent. On Sundays, a single
+"All systems OK this week" confirms the monitor itself is alive.
 
 ---
 
@@ -140,3 +157,9 @@ The `agente-CAMS` agent tracks progress toward the CAMS certification (Certified
 - **Notifications:** Telegram Bot API (topic-based supergroup)
 - **Search:** Brave Search API (Scout agent)
 - **Inter-agent communication:** File system (`shared_reports/`)
+
+---
+
+## About the author
+
+I'm transitioning into compliance and AML in the crypto space. I'm currently studying for the CAMS certification and built Jarvis to automate the parts of my day that benefit from structure — monitoring, research, job search — so I can focus on the work that requires judgment. This repo is a slice of that system.
