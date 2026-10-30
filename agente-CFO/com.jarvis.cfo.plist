@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>com.adriancfo</string>
+    <string>com.jarvis.cfo</string>
     <key>ProgramArguments</key>
     <array>
         <string>/Users/your_username/Mis-Agentes/playwright_env/bin/python3</string>

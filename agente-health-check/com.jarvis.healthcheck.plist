@@ -4,7 +4,7 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>com.adrianhealthcheck</string>
+    <string>com.jarvis.healthcheck</string>
 
     <key>ProgramArguments</key>
     <array>
