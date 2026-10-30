@@ -48,6 +48,7 @@ A modular, agent-based personal assistant system built with Python and the Anthr
 | **agente-CFO** | Autonomous (daily) | Reads financial snapshot + DeFi positions; generates consolidated report and sends actionable alerts to Telegram |
 | **agente-CAMS** | On-demand | CAMS certification study assistant — tracks sessions, generates quizzes, maintains study logs toward exam readiness |
 | **agente-health-check** | Autonomous (8:30am) | Verifies all other agents ran successfully; sends a single Telegram alert per day if anything failed |
+| **agente-ofac** | Autonomous (daily 07:00) | Syncs OFAC SDN List, indexes 1,000+ sanctioned crypto addresses across 20 currencies; CLI for exact-match screening with fail-safe DB protection |
 
 ---
 

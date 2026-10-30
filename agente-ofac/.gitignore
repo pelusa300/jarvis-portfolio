@@ -1,0 +1,6 @@
+ofac.db
+ofac_data/
+logs/
+__pycache__/
+*.pyc
+.pytest_cache/
