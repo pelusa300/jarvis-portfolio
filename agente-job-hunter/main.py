@@ -12,10 +12,11 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date
 from pathlib import Path
 
-from storage.store import load_seen_urls, save_seen_urls, is_new_job, mark_as_seen, prune_old_entries
+from storage.store import is_new_job, mark_as_seen, prune_old_entries
 from filters.job_filter import filter_jobs
 from analysis.gap_analyzer import analyze_jobs
 from notifier.telegram_bot import send_report
+from tracker.db import init_db, get_blocked_companies, is_url_tracked
 
 # Garantizar que logs/ existe antes de inicializar el FileHandler
 os.makedirs("logs", exist_ok=True)
@@ -59,9 +60,23 @@ def run_scrapers() -> list:
     return all_jobs
 
 
-def deduplicate(jobs: list, seen: list) -> list:
-    """Filtra jobs ya vistos."""
-    new_jobs = [j for j in jobs if j.get("url") and is_new_job(j["url"], seen)]
+def deduplicate(jobs: list) -> list:
+    """Filtra jobs ya vistos en seen_scrapes, ya registrados en applications, o de empresa bloqueada."""
+    blocked = get_blocked_companies()
+    new_jobs = []
+    for j in jobs:
+        url = j.get("url", "")
+        company = (j.get("company") or "").lower()
+        if not url:
+            continue
+        if not is_new_job(url):
+            continue
+        if is_url_tracked(url):
+            continue
+        if company in blocked:
+            logger.info(f"Empresa bloqueada (no_reapply_until activo): {j.get('company')}")
+            continue
+        new_jobs.append(j)
     logger.info(f"Dedup: {len(jobs)} total → {len(new_jobs)} new")
     return new_jobs
 
@@ -129,17 +144,23 @@ def main():
     logger.info("=== Job Hunter starting ===")
     logger.info(f"Date: {date.today().isoformat()}")
 
-    # 1. Cargar y prunear historial
-    seen = load_seen_urls()
-    seen = prune_old_entries(seen, ttl_days=90)
-    logger.info(f"Seen jobs loaded: {len(seen)} entries after pruning")
+    # 0. Init DB + auto-flag aplicaciones sin respuesta (≥7 días)
+    from tracker.weekly_report import check_follow_ups, write_applications_report
+    init_db()
+    stale = check_follow_ups()
+    if stale:
+        logger.info(f"Auto-marcadas como sin_respuesta: {[a['company'] for a in stale]}")
+
+    # 1. Prunear seen_scrapes
+    pruned = prune_old_entries(ttl_days=90)
+    logger.info(f"Pruned {pruned} seen_scrapes entries (>90 días)")
 
     # 2. Scraping
     all_jobs = run_scrapers()
     logger.info(f"Total scraped: {len(all_jobs)} jobs")
 
-    # 3. Deduplicación
-    new_jobs = deduplicate(all_jobs, seen)
+    # 3. Deduplicación (seen_scrapes + applications + empresas bloqueadas)
+    new_jobs = deduplicate(all_jobs)
     if not new_jobs:
         logger.info("No new jobs this week. Skipping Telegram.")
         return
@@ -181,12 +202,12 @@ def main():
         # para evitar reprocesar jobs descartados la próxima semana.
         all_new_urls = [j["url"] for j in new_jobs if j.get("url")]
         for url in all_new_urls:
-            seen = mark_as_seen(url, seen)
-        save_seen_urls(seen)
-        logger.info(f"seen_jobs.json updated with {len(all_new_urls)} new entries")
+            mark_as_seen(url)
+        logger.info(f"seen_scrapes updated with {len(all_new_urls)} new entries")
         _write_local_report(analyzed["strict"], analyzed["broad"], analyzed["top3"])
+        write_applications_report()
     except Exception as e:
-        logger.error(f"Telegram send failed — seen_jobs.json NOT updated: {e}")
+        logger.error(f"Telegram send failed — seen_scrapes NOT updated: {e}")
         sys.exit(1)
 
     # Sync report to Droplet so P-LU can read it

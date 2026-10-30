@@ -23,7 +23,7 @@ def _find_skills_in_text(text: str, skills: list) -> list:
 
 def score_job(job: dict, profile: Optional[dict] = None) -> dict:
     """
-    Nivel 1: analiza keywords del job contra el perfil de Adrian.
+    Nivel 1: analiza keywords del job contra el perfil the user.
     - skills_matched: skills confirmadas (perfil o config.SKILLS_HAVE) mencionadas en la oferta
     - en_progreso: certificaciones en progreso (perfil) mencionadas en la oferta
     - gaps: skills por aprender (config.SKILLS_LEARNING) mencionadas en la oferta, excl. en_progreso

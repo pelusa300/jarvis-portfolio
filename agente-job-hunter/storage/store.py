@@ -1,51 +1,28 @@
-import json
-import os
-from datetime import date, timedelta
-from typing import List
+from datetime import date
+from pathlib import Path
+from typing import Optional
 
-SEEN_JOBS_PATH = "storage/seen_jobs.json"
+from tracker.db import (
+    DB_PATH, init_db,
+    is_url_seen, save_seen_url, prune_seen_urls,
+)
 
-
-def load_seen_urls(path: str = SEEN_JOBS_PATH) -> List[dict]:
-    """Carga el historial de URLs vistas. Devuelve [] si no existe o está corrupto."""
-    if not os.path.exists(path):
-        return []
-    try:
-        with open(path, "r") as f:
-            result = json.load(f)
-            return result if isinstance(result, list) else []
-    except (json.JSONDecodeError, IOError):
-        return []
+_DB_PATH = DB_PATH
 
 
-def save_seen_urls(seen: List[dict], path: str = SEEN_JOBS_PATH) -> None:
-    """Escritura atómica: escribe a .tmp y renombra."""
-    tmp_path = path + ".tmp"
-    with open(tmp_path, "w") as f:
-        json.dump(seen, f, indent=2)
-    os.replace(tmp_path, path)
+def is_new_job(url: str, db_path: Optional[Path] = None) -> bool:
+    path = db_path or _DB_PATH
+    init_db(path)
+    return not is_url_seen(url, path)
 
 
-def is_new_job(url: str, seen: List[dict]) -> bool:
-    """Devuelve True si la URL no fue vista antes."""
-    seen_urls = {entry["url"] for entry in seen}
-    return url not in seen_urls
+def mark_as_seen(url: str, db_path: Optional[Path] = None) -> None:
+    path = db_path or _DB_PATH
+    init_db(path)
+    save_seen_url(url, date.today().isoformat(), path)
 
 
-def mark_as_seen(url: str, seen: List[dict]) -> List[dict]:
-    """Agrega una URL al historial con la fecha de hoy."""
-    return seen + [{"url": url, "date_seen": date.today().isoformat()}]
-
-
-def prune_old_entries(seen: List[dict], ttl_days: int = 90) -> List[dict]:
-    """Elimina entradas con date_seen de más de ttl_days días."""
-    cutoff = date.today() - timedelta(days=ttl_days)
-    result = []
-    for entry in seen:
-        try:
-            entry_date = date.fromisoformat(entry["date_seen"])
-            if entry_date >= cutoff:
-                result.append(entry)
-        except (ValueError, KeyError):
-            pass
-    return result
+def prune_old_entries(ttl_days: int = 90, db_path: Optional[Path] = None) -> int:
+    path = db_path or _DB_PATH
+    init_db(path)
+    return prune_seen_urls(ttl_days=ttl_days, db_path=path)

@@ -54,7 +54,7 @@ agente-job-hunter/
 │   └── seen_jobs.json       # Historial de URLs vistas con fecha (TTL 90 días)
 ├── logs/
 │   └── job_hunter.log       # Logs de ejecución
-└── com.adrianjobhunter.plist # Configuración launchd
+└── com.your_usernamejobhunter.plist # Configuración launchd
 ```
 
 ### Flujo de datos
@@ -167,7 +167,7 @@ Contiene el prompt de Claude como constante editable:
 
 ```python
 GAP_ANALYSIS_PROMPT = """
-Dado el perfil de Adrian (estudiando CAMS, conocimientos en KYC/AML/BSA/FinCEN/OFAC,
+Dado el perfil the user (estudiando CAMS, conocimientos en KYC/AML/BSA/FinCEN/OFAC,
 buscando rol remoto en crypto compliance), analiza esta oferta e indica:
 1) qué requisitos ya cumple
 2) qué le falta específicamente
@@ -230,13 +230,13 @@ Acciones en orden:
 3. Instalar dependencias con `pip install -r requirements.txt`
 4. Instalar browsers de Playwright: `playwright install chromium`
 5. Crear `storage/seen_jobs.json` vacío si no existe: `[]`
-6. Copiar `com.adrianjobhunter.plist` a `~/Library/LaunchAgents/`
-7. Registrar con launchd: `launchctl load ~/Library/LaunchAgents/com.adrianjobhunter.plist`
+6. Copiar `com.your_usernamejobhunter.plist` a `~/Library/LaunchAgents/`
+7. Registrar con launchd: `launchctl load ~/Library/LaunchAgents/com.your_usernamejobhunter.plist`
 8. Imprimir instrucción: `"Job Hunter instalado. Próxima ejecución: lunes 8:00 AM"`
 
 Incluye flag `--skip-linkedin` documentado en el README para desarrollo sin credenciales LinkedIn.
 
-### com.adrianjobhunter.plist
+### com.your_usernamejobhunter.plist
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -245,7 +245,7 @@ Incluye flag `--skip-linkedin` documentado en el README para desarrollo sin cred
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>com.adrianjobhunter</string>
+  <string>com.your_usernamejobhunter</string>
   <key>ProgramArguments</key>
   <array>
     <string>/path/to/venv/bin/python</string>

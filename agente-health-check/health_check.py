@@ -20,7 +20,7 @@ BASE        = Path.home() / "Mis-Agentes"
 SENTINEL    = Path(__file__).parent / "sentinel" / ".last_run"
 TOKEN       = os.environ["TELEGRAM_TOKEN"]
 GROUP_ID    = os.environ["TELEGRAM_GROUP_ID"]
-THREAD_ID   = int(os.getenv("TELEGRAM_THREAD_HERRAMIENTAS", "0"))
+THREAD_ID   = 2          # topic "Herramientas Jarvis"
 TODAY       = date.today()
 TODAY_STR   = TODAY.isoformat()   # "2026-10-29"
 ERROR_WORDS = ("Traceback", "Error", "CRITICAL", "exit code", "Exception")
@@ -58,6 +58,18 @@ AGENTS: list[dict] = [
         "log":    BASE / "agente-crypto/logs/crypto.log",
         "report": BASE / "shared_reports/crypto_latest.md",
         "frequency_days": 1,
+    },
+    {
+        "name": "ofac",
+        "log":    BASE / "agente-ofac/logs/sync.log",
+        "report": BASE / "shared_reports/ofac_latest.md",
+        "frequency_days": 1,
+    },
+    {
+        "name": "job-applications",
+        "log":    BASE / "agente-job-hunter/logs/weekly_report.log",
+        "report": BASE / "shared_reports/applications_latest.md",
+        "frequency_days": 7,
     },
 ]
 
@@ -112,8 +124,9 @@ def check_log(log_path: Path) -> str | None:
 
 def check_report(report_path: Path | None, frequency_days: int) -> str | None:
     """
-    Retorna descripción del error si el report está stale o no existe.
-    Retorna None si está fresco o si no aplica (report=None).
+    Retorna descripción del error si el report está stale, no existe,
+    o su metadata contiene 'status: FAIL'.
+    Retorna None si está fresco y sin fallos declarados.
     """
     if report_path is None:
         return None
@@ -123,13 +136,25 @@ def check_report(report_path: Path | None, frequency_days: int) -> str | None:
     age_days = (TODAY - mtime).days
     if age_days > frequency_days:
         return f"report {report_path.name} tiene {age_days}d de antigüedad (límite: {frequency_days}d)"
+    # Check for explicit FAIL status in metadata line (first 3 lines)
+    try:
+        header = report_path.read_text(errors="replace").splitlines()[:3]
+        for line in header:
+            if "status: FAIL" in line:
+                # Extract reason after "status: FAIL — "
+                import re
+                m = re.search(r"status: FAIL\s*(?:—\s*)?(.+?)_", line)
+                reason = m.group(1).strip() if m else "falla declarada en reporte"
+                return f"{report_path.name}: {_trim(reason)}"
+    except OSError:
+        pass
     return None
 
 
 def check_plu() -> str | None:
     """
     Si P-LU está corriendo, verifica su log de hoy.
-    Si no está corriendo, retorna None (es intencional — Adrian lo abre manualmente).
+    Si no está corriendo, retorna None (es intencional — the user lo abre manualmente).
     """
     result = subprocess.run(
         ["pgrep", "-f", PLU_PROCESS_PATTERN],

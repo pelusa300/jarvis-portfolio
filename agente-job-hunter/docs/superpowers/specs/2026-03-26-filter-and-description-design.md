@@ -41,7 +41,7 @@ TITLE_EXCLUDE_KEYWORDS = [
 
 Placed at the top of `filters/job_filter.py` alongside the existing keyword lists.
 
-**Note:** Bare `"engineer"` is intentionally excluded from this list. "Compliance Engineer", "AML Engineer", "KYC Engineer", and "RegTech Engineer" are legitimate target roles for Adrian. Only compound phrases like `"software engineer"`, `"backend engineer"` etc. are excluded.
+**Note:** Bare `"engineer"` is intentionally excluded from this list. "Compliance Engineer", "AML Engineer", "KYC Engineer", and "RegTech Engineer" are legitimate target roles for the user. Only compound phrases like `"software engineer"`, `"backend engineer"` etc. are excluded.
 
 ### New function
 

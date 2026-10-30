@@ -4,7 +4,7 @@
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>com.adrianjobhunter</string>
+  <string>com.your_usernamejobhunter</string>
   <key>ProgramArguments</key>
   <array>
     <string>/usr/bin/python3</string>

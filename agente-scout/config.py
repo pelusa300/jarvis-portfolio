@@ -22,7 +22,7 @@ BRAVE_SEARCH_API_KEY = os.getenv("BRAVE_SEARCH_API_KEY", "")
 
 MODEL = "claude-sonnet-4-6"
 
-# Agentes actuales del sistema de Adrian
+# Current system agents the user
 AGENTS = [
     "agente-mentor",
     "agente-job-hunter",

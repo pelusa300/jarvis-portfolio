@@ -2,6 +2,8 @@
 logs/
 storage/seen_jobs.json
 storage/seen_jobs.tmp
+applications.db
+~/.config/jarvis/applications.db
 __pycache__/
 *.pyc
 .pytest_cache/

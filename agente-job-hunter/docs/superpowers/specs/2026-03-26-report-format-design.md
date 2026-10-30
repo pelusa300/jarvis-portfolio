@@ -17,9 +17,9 @@ Four targeted improvements to the Telegram report format sent by the job hunter 
 
 ## Change 1 — Skills Match (config.py)
 
-Expand the skills lists to better reflect Adrian's real profile and surface genuine gaps.
+Expand the skills lists to better reflect the user'ss real profile and surface genuine gaps.
 
-### SKILLS_HAVE (Adrian already knows — shown as "Cumples")
+### SKILLS_HAVE (the user already knows — shown as "Cumples")
 ```python
 SKILLS_HAVE = [
     "CAMS", "KYC", "AML", "BSA", "FinCEN", "OFAC",
@@ -29,7 +29,7 @@ SKILLS_HAVE = [
 ]
 ```
 
-### SKILLS_LEARNING (Adrian doesn't have yet — shown as "Te falta")
+### SKILLS_LEARNING (the user doesn't have yet — shown as "Te falta")
 ```python
 SKILLS_LEARNING = [
     "Chainalysis", "Elliptic", "TRM Labs", "blockchain analytics",

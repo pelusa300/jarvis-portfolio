@@ -30,7 +30,7 @@ aliases: ["job-hunter (2026-03-24)"]
 | `analysis/gap_analyzer.py` | Keyword scoring + Claude gap analysis |
 | `notifier/telegram_bot.py` | Format and send Telegram messages |
 | `main.py` | Orchestrator — runs full pipeline |
-| `com.adrianjobhunter.plist` | launchd schedule (Monday 8AM) |
+| `com.your_usernamejobhunter.plist` | launchd schedule (Monday 8AM) |
 | `setup.sh` | Install script: deps + launchd registration |
 | `requirements.txt` | Python dependencies |
 | `.gitignore` | Exclude .env, logs/, storage/seen_jobs.* |
@@ -163,7 +163,7 @@ SOURCE_PRIORITY = ["remote_ok", "crypto_jobs_list", "web3_career", "linkedin"]
 
 ```python
 GAP_ANALYSIS_PROMPT = """\
-Dado el perfil de Adrian (estudiando CAMS, conocimientos en KYC/AML/BSA/FinCEN/OFAC,
+Dado el perfil the user (estudiando CAMS, conocimientos en KYC/AML/BSA/FinCEN/OFAC,
 buscando rol remoto en crypto compliance), analiza esta oferta e indica:
 1) qué requisitos ya cumple
 2) qué le falta específicamente
@@ -619,22 +619,22 @@ def _find_skills_in_text(text: str, skills: list) -> list:
 
 def score_job(job: dict) -> dict:
     """
-    Nivel 1: analiza keywords del job contra el perfil de Adrian.
-    - skills_matched: skills que Adrian YA TIENE o está aprendiendo, mencionadas en la oferta
+    Nivel 1: analiza keywords del job contra el perfil the user.
+    - skills_matched: skills que the user YA TIENE o está aprendiendo, mencionadas en la oferta
     - gaps: skills de SKILLS_LEARNING mencionadas en la oferta (conoce el concepto, le falta práctica)
-            más cualquier skill de dominio conocida no en el perfil de Adrian
+            más cualquier skill de dominio conocida no en el perfil the user
     - score: skills_matched / total_skills_in_job
     """
     text = (job.get("description") or "") + " " + (job.get("title") or "")
 
-    # Skills que Adrian tiene
+    # Skills que the user tiene
     skills_matched = _find_skills_in_text(text, config.SKILLS_HAVE)
-    # Skills que Adrian está aprendiendo (aparecen en la oferta — gap real de experiencia práctica)
+    # Skills que the user está aprendiendo (aparecen en la oferta — gap real de experiencia práctica)
     skills_learning_in_job = _find_skills_in_text(text, config.SKILLS_LEARNING)
     # Total de skills relevantes detectadas en la oferta
     all_detected = skills_matched + skills_learning_in_job
 
-    # Brechas: skills en el job que Adrian NO tiene (solo está aprendiendo o no conoce)
+    # Brechas: skills en el job que the user NO tiene (solo está aprendiendo o no conoce)
     gaps = skills_learning_in_job
 
     total = len(all_detected) if all_detected else 1  # evitar división por cero
@@ -1516,10 +1516,10 @@ git commit -m "feat: main orchestrator with full pipeline"
 ## Task 11: launchd plist y setup.sh
 
 **Files:**
-- Create: `com.adrianjobhunter.plist`
+- Create: `com.your_usernamejobhunter.plist`
 - Create: `setup.sh`
 
-- [ ] **Step 1: Create `com.adrianjobhunter.plist`**
+- [ ] **Step 1: Create `com.your_usernamejobhunter.plist`**
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -1528,7 +1528,7 @@ git commit -m "feat: main orchestrator with full pipeline"
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>com.adrianjobhunter</string>
+  <string>com.your_usernamejobhunter</string>
   <key>ProgramArguments</key>
   <array>
     <string>PYTHON_PATH_PLACEHOLDER</string>
@@ -1594,10 +1594,10 @@ fi
 # 6. Generar plist con rutas absolutas
 WORKING_DIR="$(pwd)"
 PYTHON_PATH="$(python3 -c 'import sys; print(sys.executable)')"
-PLIST_DEST="$HOME/Library/LaunchAgents/com.adrianjobhunter.plist"
+PLIST_DEST="$HOME/Library/LaunchAgents/com.your_usernamejobhunter.plist"
 
 sed "s|WORKING_DIR_PLACEHOLDER|$WORKING_DIR|g; s|PYTHON_PATH_PLACEHOLDER|$PYTHON_PATH|g" \
-    com.adrianjobhunter.plist > "$PLIST_DEST"
+    com.your_usernamejobhunter.plist > "$PLIST_DEST"
 echo "✅ plist installed to $PLIST_DEST"
 
 # 7. Cargar en launchd
@@ -1621,7 +1621,7 @@ chmod +x setup.sh
 - [ ] **Step 4: Commit**
 
 ```bash
-git add com.adrianjobhunter.plist setup.sh
+git add com.your_usernamejobhunter.plist setup.sh
 git commit -m "feat: launchd plist and setup.sh installer"
 ```
 
@@ -1686,7 +1686,7 @@ git commit -m "chore: final integration test and cleanup"
 
 ```bash
 # Verificar que launchd registró el job
-launchctl list | grep adrianjobhunter
+launchctl list | grep your_usernamejobhunter
 
 # Ejecutar manualmente para probar
 python3 main.py

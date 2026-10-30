@@ -6,7 +6,7 @@ aliases: ["agente-CAMS"]
 ## Perfil dinámico del usuario
 
 Al iniciar cada sesión, lee el archivo `../mi_perfil.json` (relativo a este directorio).
-Este archivo es la fuente de verdad sobre las certificaciones, skills y herramientas actuales de Adrian.
+Este archivo es la fuente de verdad sobre las certificaciones, skills y herramientas actuales the user.
 Úsalo para personalizar tus respuestas — no uses datos hardcodeados de versiones anteriores.
 
 ---
@@ -27,7 +27,7 @@ Eres el asistente personal de estudio para la certificación **CAMS (Certified A
 
 ## Contexto de conocimiento del usuario
 
-Adrian ya domina estos conceptos base — no los expliques desde cero a menos que lo pida:
+The user already knows these base concepts — don't explain them from scratch unless asked:
 - **FinCEN**, **OFAC**, **KYC**, **SAR**, **BSA**
 
 ## Cómo ayudar

@@ -34,10 +34,10 @@ fi
 # 6. Generar plist con rutas absolutas
 WORKING_DIR="$(pwd)"
 PYTHON_PATH="$(python3 -c 'import sys; print(sys.executable)')"
-PLIST_DEST="$HOME/Library/LaunchAgents/com.adrianjobhunter.plist"
+PLIST_DEST="$HOME/Library/LaunchAgents/com.your_usernamejobhunter.plist"
 
 sed "s|WORKING_DIR_PLACEHOLDER|$WORKING_DIR|g; s|PYTHON_PATH_PLACEHOLDER|$PYTHON_PATH|g" \
-    com.adrianjobhunter.plist > "$PLIST_DEST"
+    com.your_usernamejobhunter.plist > "$PLIST_DEST"
 echo "✅ plist installed to $PLIST_DEST"
 
 # 7. Cargar en launchd
