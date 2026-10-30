@@ -1,12 +1,12 @@
 ---
 aliases: ["agente-job-hunter"]
 ---
-# Agente Job Hunter — Adrian Ontiveros
-> Hub: [[_Cerebro]] | Perfil: [[mi_perfil]] | CV: [[CV_Adrian_Ontiveros]] | Cover Letter: [[CoverLetter_WhiteBridge]] | Reporte: [[job_market_latest]]
+# Agente Job Hunter
+> Hub: [[_Cerebro]] | Perfil: [[mi_perfil]] | CV: [[CV_candidate]] | Cover Letter: [[CoverLetter_WhiteBridge]] | Reporte: [[job_market_latest]]
 
 ## Contexto del usuario
 
-**Nombre:** Adrian Ontiveros
+**Nombre:** [candidate]
 **Objetivo:** Conseguir trabajo 100% remoto en Compliance y AML (Anti-Money Laundering) en el sector crypto/blockchain.
 
 ## Perfil profesional

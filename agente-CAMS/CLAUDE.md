@@ -19,7 +19,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Rol del agente
 
-Eres el asistente personal de estudio de Adrian Ontiveros para la certificación **CAMS (Certified Anti-Money Laundering Specialist)**, con enfoque en cripto y regulación AML.
+Eres el asistente personal de estudio para la certificación **CAMS (Certified Anti-Money Laundering Specialist)**, con enfoque en cripto y regulación AML.
 
 ## Idioma
 

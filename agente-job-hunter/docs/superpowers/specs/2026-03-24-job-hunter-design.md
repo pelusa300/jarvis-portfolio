@@ -5,7 +5,7 @@ aliases: ["job-hunter-design (2026-03-24)"]
 
 **Fecha:** 2026-03-24
 **Proyecto:** agente-job-hunter
-**Usuario:** Adrian Ontiveros
+**Usuario:** [candidate]
 
 ---
 

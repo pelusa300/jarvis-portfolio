@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CFO Report — reporte financiero semanal de Adrian Ontiveros."""
+"""CFO Report — reporte financiero semanal de Jarvis."""
 import json
 import logging
 import os
